@@ -29,7 +29,7 @@ public class Identificador {
     int qtdArmazenada;
     boolean funcao;
 
-    public Identificador(String nome, Tipo tipo, boolean inicializada, boolean usada, Escopo escopo, boolean parametro, int posicaoParametro, int dimensoes, int qtdArmazenada, boolean funcao)
+    public Identificador( String nome, Tipo tipo, boolean inicializada, boolean usada, Escopo escopo, boolean parametro, boolean referencia, int posicaoParametro, int dimensoes, int qtdArmazenada, boolean funcao )
     {
         this.nome = nome;
         this.tipo = tipo;
@@ -42,7 +42,7 @@ public class Identificador {
         this.qtdArmazenada = qtdArmazenada;
         this.funcao = funcao;
     }
-    public Identificador(String nome, Tipo tipo, boolean inicializada, boolean usada, Escopo escopo, boolean parametro, int posicaoParametro, int dimensoes, boolean funcao)
+    public Identificador(String nome, Tipo tipo, boolean inicializada, boolean usada, Escopo escopo, boolean parametro, boolean referencia, int posicaoParametro, int dimensoes, boolean funcao)
     {
         this.nome = nome;
         this.tipo = tipo;

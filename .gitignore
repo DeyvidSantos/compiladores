@@ -3,3 +3,4 @@ build/
 
 src/executargramatica/lingaguemmodel/.antlr/
 /dist/
+nbproject/private/

@@ -13,7 +13,6 @@ import executargramatica.models.Identificador.Tipo;
 import java.util.ArrayList;
 import java.util.List;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
-import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
@@ -117,7 +116,7 @@ public class LiguagemSemantico extends VisitorLingaguem {
         visitTipo(ctx.tipo());
         List<LinguagemParser.DeclaracaoContext> declaracao = ctx.declaracao();
         for (LinguagemParser.DeclaracaoContext declaracaoContext : declaracao) {
-            
+
             if (declaracaoContext.multidimensional() != null) {
                 visitMultidimensional(declaracaoContext.multidimensional());
             } else {
@@ -132,7 +131,6 @@ public class LiguagemSemantico extends VisitorLingaguem {
             }
             if (Escopo.verificaSeExisteNoEscopo(declaracaoContext.ID().getSymbol().getText(), tabelaSimbolos, escopoAtual)) {
                 throw new ParseCancellationException("Declaração de Váriavel " + declaracaoContext.ID() + " já existe neste escopo Linha: " + declaracaoContext.start.getLine() + " Coluna: " + declaracaoContext.start.getCharPositionInLine());
-                //System.out.println("Declaração de Váriavel " + declaracaoContext.ID() + " já existe neste escopo Linha: " + declaracaoContext.start.getLine() + " Coluna: " + declaracaoContext.start.getCharPositionInLine());
             }
             Identificador id = new Identificador(
                     declaracaoContext.ID().getSymbol().getText(),
@@ -140,6 +138,7 @@ public class LiguagemSemantico extends VisitorLingaguem {
                     inicializada,
                     false,
                     escopoAtual,
+                    false,
                     false,
                     0,
                     multidimensional,
@@ -225,7 +224,7 @@ public class LiguagemSemantico extends VisitorLingaguem {
         visitChildren(ctx);
         retornaEscopoPai();
         return null;
-    }   
+    }
 
     @Override
     public Object visitFuncao(LinguagemParser.FuncaoContext ctx) {
@@ -327,7 +326,7 @@ public class LiguagemSemantico extends VisitorLingaguem {
         retornaEscopoPai();
         return null;
     }
-    
+
     @Override
     public Object visitParametrosChamada(LinguagemParser.ParametrosChamadaContext ctx) {
         return super.visitParametrosChamada(ctx); //To change body of generated methods, choose Tools | Templates.
@@ -340,30 +339,28 @@ public class LiguagemSemantico extends VisitorLingaguem {
 
     @Override
     public Object visitParametros(LinguagemParser.ParametrosContext ctx) {
-        
-        List<LinguagemParser.ParametroContext> parametro = ctx.parametro();
-        for (LinguagemParser.ParametroContext parametroContext : parametro) {
-            
+
+        for (int i = 0; i < ctx.parametro().size(); i++) {
+
+            String idName = ctx.parametro(i).ID().getSymbol().getText();
+            if (Escopo.verificaSeExisteNoEscopo(idName, tabelaSimbolos, escopoAtual)) {
+                throw new ParseCancellationException("Declaração de Váriavel " + idName + " já existe neste escopo Linha: " + ctx.start.getLine() + " Coluna: " + ctx.start.getCharPositionInLine());
+            }
+            visitTipo(ctx.parametro(i).tipo());
+            Identificador id = new Identificador(
+                    idName,
+                    tipoAtual,
+                    true,
+                    false,
+                    escopoAtual,
+                    true,
+                    ctx.parametro(i).BIT_AND() != null,
+                    i + 1,
+                    multidimensional,
+                    false);
+            tabelaSimbolos.add(id);
+
         }
-//        for (int i = 0; i < ctx.ID().size(); i++) {
-//            String idName = ctx.ID(i).getSymbol().getText();
-//            if (Escopo.verificaSeExisteNoEscopo(idName, tabelaSimbolos, escopoAtual)) {
-//                throw new ParseCancellationException("Declaração de Váriavel " + idName + " já existe neste escopo Linha: " + ctx.start.getLine() + " Coluna: " + ctx.start.getCharPositionInLine());
-//            }
-//            visitTipo(ctx.tipo(i));
-//            Identificador id = new Identificador(
-//                    idName,
-//                    tipoAtual,
-//                    true,
-//                    false,
-//                    escopoAtual,
-//                    true,
-//                    i + 1,
-//                    1, // Só aceita unidimensional como parametro... 
-//                    false);
-//            tabelaSimbolos.add(id);
-//
-//        }
         return null;
     }
 
@@ -390,13 +387,12 @@ public class LiguagemSemantico extends VisitorLingaguem {
     private void markAllFunctions(LinguagemParser.ProgContext ctxProg) {
         List<LinguagemParser.FuncaoContext> fctx = ctxProg.funcaoInicio().funcao();
         for (LinguagemParser.FuncaoContext ctx : fctx) {
-//      
             visitTipoComVoid(ctx.tipoComVoid());
             if (Escopo.verificaSeExisteNoEscopo(ctx.ID().getSymbol().getText(), tabelaSimbolos, escopoAtual)) {
-//                this.semanticErrors.add(new ParseCancellationException("Declaração da Função " + ctx.ID().getSymbol().getText() + " já existe neste escopo Linha: " + ctx.start.getLine() + " Coluna: " + ctx.start.getCharPositionInLine()));
+                new ParseCancellationException("Declaração da Função " + ctx.ID().getSymbol().getText() + " já existe neste escopo Linha: " + ctx.start.getLine() + " Coluna: " + ctx.start.getCharPositionInLine());
             }
             boolean usada = false;
-            if(ctx.ID().getSymbol().getText().equals("inicio")){
+            if (ctx.ID().getSymbol().getText().equals("divideByZero")) {
                 usada = true;
             }
             Identificador id = new Identificador(
@@ -406,7 +402,7 @@ public class LiguagemSemantico extends VisitorLingaguem {
                     usada,
                     escopoAtual,
                     false,
-                    0,
+                    false,
                     0,
                     0,
                     true);
@@ -415,7 +411,6 @@ public class LiguagemSemantico extends VisitorLingaguem {
             escopoAtual = Escopo.criaEVaiEscopoNovo(ctx.ID().getText(), escopoAtual);
             visitParametros(ctx.parametros());
             retornaEscopoPai();
-            //visitFuncao(ctx);
         }
     }
 

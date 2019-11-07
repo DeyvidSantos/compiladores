@@ -1,6 +1,6 @@
 grammar Linguagem;
 
-prog : funcaoInicio;
+prog : INICIO CHAVE funcaoInicio CHAVE_E FIM;
 
 funcaoInicio: ((declaracoes PONTOVIRGULA) | funcao)+;
 funcao: tipoComVoid ID PARENTESES parametros PARENTESES_E bloco;

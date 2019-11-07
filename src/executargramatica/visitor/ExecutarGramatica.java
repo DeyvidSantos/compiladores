@@ -3,13 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package executargramatica.visitor;
 
 import executargramatica.lingaguemmodel.LinguagemLexer;
 import executargramatica.lingaguemmodel.LinguagemParser;
 import executargramatica.models.ErroLexico;
-import executargramatica.models.FuncoesPadroes;
 import executargramatica.models.Identificador;
 import java.io.File;
 import java.io.FileWriter;
@@ -17,7 +15,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
@@ -31,17 +28,15 @@ import org.antlr.v4.runtime.tree.ParseTree;
  *
  * @author noschang
  */
-public class ExecutarGramatica extends javax.swing.JFrame
-{
-    
+public class ExecutarGramatica extends javax.swing.JFrame {
+
     String url;
     List<Identificador> ids = null;
 
     /**
      * Creates new form Frame
      */
-    public ExecutarGramatica()
-    {
+    public ExecutarGramatica() {
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -208,13 +203,10 @@ public class ExecutarGramatica extends javax.swing.JFrame
 
         DefaultListModel modeloLista = new DefaultListModel();
         listaMensagens.setModel(modeloLista);
-        
+
         DefaultListModel modeloAviso = new DefaultListModel();
         listaAvisos.setModel(modeloAviso);
-          ErroLexico erro = new ErroLexico();
-
-        TratadorErrosLexico tratadorErrosLexico = new TratadorErrosLexico(modeloLista);
-        TratadorErrosSintatico tratadorErrosSintatico = new TratadorErrosSintatico(modeloLista);
+        ErroLexico errolexico = new ErroLexico();
 
         // Remove o tratador de erros padrão do lexer e do parser
         lexer.removeErrorListeners();
@@ -222,152 +214,115 @@ public class ExecutarGramatica extends javax.swing.JFrame
 
         // Instala o tratador de erros personalizado que irá exibir as mensagens
         // em tela na JList
-        lexer.addErrorListener(tratadorErrosLexico);
-        parser.addErrorListener(tratadorErrosSintatico);
+        lexer.addErrorListener(errolexico);
+        parser.addErrorListener(errolexico);
 
-        // Chama a regar inicial do parser, esta regra deve estar definida na gramática
-      //  parser.prog();
-          // Chama a regar inicial do parser, esta regra deve estar definida na gramática
-           ParseTree tree = parser.funcaoInicio(); 
-        if (erro.getErrors().isEmpty())
-        {
-               //*
-//            LiguagemSemantico visitor = new LiguagemSemantico(FuncoesPadroes.gerarFuncoesPadroes(FuncoesPadroes.Compilador.BIPIDE));
+        ParseTree tree = parser.prog();
+
+        if (errolexico.getErrors().isEmpty()) {
             LiguagemSemantico visitor = new LiguagemSemantico(new ArrayList<Identificador>());
-            try
-            {
+            try {
                 visitor.visit(tree);
                 ids = visitor.getTabelaSimbolos();
-                LiguagemSemantico gerador = new LiguagemSemantico(ids);
+
                 for (Identificador id : ids) {
-                   if(id.isUsada() == false){
-                      modeloAviso.addElement(((!id.isFuncao()? "Váriavel " : "Função ") + id.getNome() + " foi declarada mas não utilizada"));
+                    if (id.isUsada() == false) {
+                        modeloAviso.addElement(((!id.isFuncao() ? "Váriavel " : "Função ") + id.getNome() + " foi declarada mas não utilizada"));
                     }
                 }
-                  if(!visitor.getWarnings().isEmpty()){
+                if (!visitor.getWarnings().isEmpty()) {
                     panelAvisos.setSelectedIndex(1);
-                    for ( String warning : visitor.getWarnings()){
+                    for (String warning : visitor.getWarnings()) {
                         modeloAviso.addElement(warning);
                     }
                 }
-                
-                
-                
-                gerador.visit(tree);
-              //  new CodigoApresentado(gerador.getCodigo()).setVisible(true);
-              
-              
-            } catch (Exception e)
-            {
+
+            } catch (Exception e) {
                 System.out.println(e.getLocalizedMessage());
-                erro.getErrors().add(e.getLocalizedMessage());
+                errolexico.getErrors().add(e.getLocalizedMessage());
                 modeloLista.addElement(e.getLocalizedMessage());
             }
         }
-        for (String errin : erro.getErrors())
-        {
+        for (String errin : errolexico.getErrors()) {
             modeloLista.addElement(errin);
         }
         listaMensagens.setModel(modeloLista);
-        
-        
-        if(modeloLista.isEmpty()){
+
+        if (modeloLista.isEmpty()) {
             modeloLista.addElement("VERYMUCHCOMPILED");
 
         }
     }//GEN-LAST:event_compiladorBotaoActionPerformed
 
     private void abrirBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirBotaoActionPerformed
- 
+
         JFileChooser fileChooser = new JFileChooser("C:\\Coisas");
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivos TXT & LANGUAGE", "txt", "LANGUAGE");
         fileChooser.addChoosableFileFilter(filter);
         fileChooser.setAcceptAllFileFilterUsed(false);
-        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
-        {
+        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            try
-            {
+            try {
                 String x = new String(Files.readAllBytes(file.toPath()));
                 txtCodigo.setText(x);
-            } catch (IOException ex)
-            {
+            } catch (IOException ex) {
                 JOptionPane.showMessageDialog(rootPane, "Não Deu");
             }
         }
     }//GEN-LAST:event_abrirBotaoActionPerformed
 
     private void salvarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarBotaoActionPerformed
-   JFileChooser fc = new JFileChooser();
+        JFileChooser fc = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivo LANGUAGE", "LANGUAGE");
         fc.addChoosableFileFilter(filter);
         fc.setAcceptAllFileFilterUsed(false);
 
         int returnVal = fc.showSaveDialog(this);
 
-        if (returnVal == JFileChooser.APPROVE_OPTION)
-        {
-            try (FileWriter fw = new FileWriter(fc.getSelectedFile() + ".LANGUAGE"))
-            {
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            try (FileWriter fw = new FileWriter(fc.getSelectedFile() + ".LANGUAGE")) {
                 fw.write(txtCodigo.getText());
                 fw.close();
-            } catch (IOException ex)
-            {
+            } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "Não foi possivel salvar o arquivo", "ERRO", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_salvarBotaoActionPerformed
 
     private void tabelaBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tabelaBotaoActionPerformed
-         new Tabela(ids).setVisible(true);
+        new Tabela(ids).setVisible(true);
     }//GEN-LAST:event_tabelaBotaoActionPerformed
 
- 
-    
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[])
-    {
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try
-        {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
-            {
-                if ("Nimbus".equals(info.getName()))
-                {
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        }
-        catch (ClassNotFoundException ex)
-        {
+        } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(ExecutarGramatica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        catch (InstantiationException ex)
-        {
+        } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(ExecutarGramatica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        catch (IllegalAccessException ex)
-        {
+        } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(ExecutarGramatica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        catch (javax.swing.UnsupportedLookAndFeelException ex)
-        {
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ExecutarGramatica.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable()
-        {
-            public void run()
-            {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
                 new ExecutarGramatica().setVisible(true);
             }
         });
