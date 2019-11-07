@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -227,11 +228,12 @@ public class ExecutarGramatica extends javax.swing.JFrame
         // Chama a regar inicial do parser, esta regra deve estar definida na gramática
       //  parser.prog();
           // Chama a regar inicial do parser, esta regra deve estar definida na gramática
-           ParseTree tree = parser.prog(); 
+           ParseTree tree = parser.funcaoInicio(); 
         if (erro.getErrors().isEmpty())
         {
                //*
-            LiguagemSemantico visitor = new LiguagemSemantico(FuncoesPadroes.gerarFuncoesPadroes(FuncoesPadroes.Compilador.BIPIDE));
+//            LiguagemSemantico visitor = new LiguagemSemantico(FuncoesPadroes.gerarFuncoesPadroes(FuncoesPadroes.Compilador.BIPIDE));
+            LiguagemSemantico visitor = new LiguagemSemantico(new ArrayList<Identificador>());
             try
             {
                 visitor.visit(tree);
@@ -257,8 +259,8 @@ public class ExecutarGramatica extends javax.swing.JFrame
               
             } catch (Exception e)
             {
-                //System.out.println(e.getLocalizedMessage());
-                //erro.getErrors().add(e.getLocalizedMessage());
+                System.out.println(e.getLocalizedMessage());
+                erro.getErrors().add(e.getLocalizedMessage());
                 modeloLista.addElement(e.getLocalizedMessage());
             }
         }

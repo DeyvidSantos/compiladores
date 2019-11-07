@@ -1,23 +1,21 @@
 grammar Linguagem;
 
-prog : INICIO CHAVE declaracoes* funcoes+ CHAVE_E FIM;
+prog : funcaoInicio;
 
-//*Escopo de funCOes
-
-funcoes: (tipoComVoid ID PARENTESES parametros PARENTESES_E bloco);
-parametros : ((tipo ID (VIRGULA tipo ID)* | (tipo ID multidimensional)))?; //sadd regra sobre array
+funcaoInicio: ((declaracoes PONTOVIRGULA) | funcao)+;
+funcao: tipoComVoid ID PARENTESES parametros PARENTESES_E bloco;
+parametros : (parametro(VIRGULA parametro)*)?;
+parametro: tipo (BIT_AND)? ID (multidimensional)?;
 
 //**Escopo de bloco
 bloco: CHAVE comandos CHAVE_E ;
 
 //*** Comandos
-comandos: (condicionais|((retorno|declaracoes|atribuicoes|chamadaFuncao|imprimir|ler)PONTOVIRGULA))*;
+comandos: (condicionais|comando)*;
+comando:((retorno|declaracoes|atribuicoes|chamadaFuncao|entradaesaida)PONTOVIRGULA);
 
-//COut
-imprimir: COUT PARENTESES expressao PARENTESES_E;
-
-//CIN
-ler: CIN PARENTESES comandos PARENTESES_E; //variaveis e vetores
+//**** Entrada e Saida
+entradaesaida: (CIN | COUT) PARENTESES parametrosChamada PARENTESES_E;
 
 //**** Retorno
 retorno: RETORNO expressao;
@@ -27,45 +25,44 @@ chamadaFuncao: ID PARENTESES parametrosChamada PARENTESES_E;
 parametrosChamada: (expressao (VIRGULA expressao)*)? ;
 
 //**** Condicionais
-condicionais: iffi | whiles | fors | dos PONTOVIRGULA | switchs;
+condicionais: ifdes | whiledes | fordes | dodes PONTOVIRGULA | switchdes;
 
-iffi: IF PARENTESES expressao PARENTESES_E bloco (elsese|elseiffi)?;
-elsese: ELSE bloco;
-elseiffi: ELSE iffi ;
-whiles: WHILE PARENTESES expressao PARENTESES_E bloco;
-fors: FOR PARENTESES (declaracoes|atribuicoes) PONTOVIRGULA expressao PONTOVIRGULA atribuicoes PARENTESES_E bloco;
-dos: DO bloco WHILE PARENTESES expressao PARENTESES_E PONTOVIRGULA;
-switchs: SWITCH PARENTESES expressao PARENTESES_E CHAVE cases defaults CHAVE_E;
-cases: (CASE expressao DOISPONTOS comandos (BREAK)?)* ;
-defaults: (DEFAULTCASE DOISPONTOS comandos (BREAK)?)? ;
-
+ifdes: IF PARENTESES expressao PARENTESES_E bloco (ifdeselse|ifdeselseif)?;
+ifdeselse: ELSE bloco;
+ifdeselseif: ELSE ifdes ;
+whiledes: WHILE PARENTESES expressao PARENTESES_E bloco;
+fordes: FOR PARENTESES (declaracoes|atribuicoes) PONTOVIRGULA expressao PONTOVIRGULA atribuicoes PARENTESES_E bloco;
+dodes: DO bloco WHILE PARENTESES expressao PARENTESES_E;
+switchdes: SWITCH PARENTESES expressao PARENTESES_E CHAVE switchCase defaultdes CHAVE_E;
+switchCase: (CASE expressao DOISPONTOS comandos (BREAK)?)* ;
+defaultdes: (DEFAULTCASE DOISPONTOS comandos (BREAK)?)? ;
 //**** Declaracoes
-declaracoes: tipo ID ((ATRIBU expressao)|(multidimensional(ATRIBU declaracoesArray)?))?;
-multidimensional: (COCH N_INT COCH_E)+;
+declaracoes: tipo declaracao (VIRGULA declaracao)*;
+declaracao: ID ((ATRIBU expressao)|(multidimensional(ATRIBU declaracoesArray)?))?;
+multidimensional: (COCH expressao COCH_E)+;
 
 declaracoesArray: CHAVE (subArrayDeclaracoes|declaracoesArray) CHAVE_E (VIRGULA CHAVE (subArrayDeclaracoes|declaracoesArray) CHAVE_E)*;
-subArrayDeclaracoes: expressao (VIRGULA expressao)*;
+subArrayDeclaracoes: expressao (VIRGULA expressao)* ;
 
-
-
-//**** Atribui��es
-atribuicoes: ID (multidimensional)? ((atribuicoesIncEDec)|(ATRIBU expressao));
+//**** Atribuições
+atribuicoes: ID (multidimensional)? ((atribuicoesIncEDec)|((ATRIBU | op_atr) expressao));
 atribuicoesIncEDec: SOMA SOMA|SUB SUB;
 
-//Defini��es gerais
+//Definições gerais
 tipoComVoid: VOID | tipo;
-tipo: INT | STRING | DOUBLE | BOOLEAN | CHAR | FLOAT | N_BIN | N_HEX ;
+tipo: INT | STRING | DOUBLE | BOOLEAN | N_BIN | N_HEX | CHAR;
 
-// NEW Express�es
+// NEW Expressões
 expressao: (op_neg)?(val_final)((operations)(val_final))*;
 
 operations : op_rel | op_neg | op_bitwise | op_arit_baixa | op_logica;
-op_rel : MAIOQ | MENOQ | MAIOIG | MENOIG | IGUAL | DIF;
+op_atr : SOMA IGUAL | SOMA IGUAL;
+op_rel : MAIOQ | MENOQ | MAIOIG | MENOQ | IGUAL | DIF;
 op_neg : SUB | BIT_NOT | NEGA;
-op_bitwise : BIT_PE | BIT_PD;
-op_arit_baixa : SOMA | MULT | DIV;
+op_bitwise : BIT_PE | BIT_PD | BIT_AND | BIT_OR | BIT_XOR | BIT_NOT;
+op_arit_baixa : SOMA | DIV | MULT | RESTO;
 op_logica : EE | OUOU | NEGA;
-val_final : N_INT | E_STRING | TRUE | FALSE | N_DOUBLE | N_FLOAT  | ID | chamadaFuncao | ID multidimensional | PARENTESES expressao PARENTESES_E;
+val_final : N_INT | E_STRING | N_BIN | N_HEX | E_CHAR | CONSTLOGICO | N_DOUBLE | ID | chamadaFuncao | ID multidimensional | PARENTESES expressao PARENTESES_E;
 
 
                        //PALAVRAAS RESERVADAs/ss/
@@ -120,6 +117,7 @@ DIF : '!=';
 EE : '&&';
 OUOU : '||';
 NEGA : '!';
+CONSTLOGICO: TRUE | FALSE;
 TRUE: 'true';
 FALSE: 'false';
 

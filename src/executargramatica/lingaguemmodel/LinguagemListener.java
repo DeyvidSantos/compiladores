@@ -18,15 +18,25 @@ public interface LinguagemListener extends ParseTreeListener {
 	 */
 	void exitProg(LinguagemParser.ProgContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LinguagemParser#funcoes}.
+	 * Enter a parse tree produced by {@link LinguagemParser#funcaoInicio}.
 	 * @param ctx the parse tree
 	 */
-	void enterFuncoes(LinguagemParser.FuncoesContext ctx);
+	void enterFuncaoInicio(LinguagemParser.FuncaoInicioContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LinguagemParser#funcoes}.
+	 * Exit a parse tree produced by {@link LinguagemParser#funcaoInicio}.
 	 * @param ctx the parse tree
 	 */
-	void exitFuncoes(LinguagemParser.FuncoesContext ctx);
+	void exitFuncaoInicio(LinguagemParser.FuncaoInicioContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LinguagemParser#funcao}.
+	 * @param ctx the parse tree
+	 */
+	void enterFuncao(LinguagemParser.FuncaoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LinguagemParser#funcao}.
+	 * @param ctx the parse tree
+	 */
+	void exitFuncao(LinguagemParser.FuncaoContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LinguagemParser#parametros}.
 	 * @param ctx the parse tree
@@ -37,6 +47,16 @@ public interface LinguagemListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitParametros(LinguagemParser.ParametrosContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LinguagemParser#parametro}.
+	 * @param ctx the parse tree
+	 */
+	void enterParametro(LinguagemParser.ParametroContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LinguagemParser#parametro}.
+	 * @param ctx the parse tree
+	 */
+	void exitParametro(LinguagemParser.ParametroContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LinguagemParser#bloco}.
 	 * @param ctx the parse tree
@@ -58,25 +78,25 @@ public interface LinguagemListener extends ParseTreeListener {
 	 */
 	void exitComandos(LinguagemParser.ComandosContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LinguagemParser#imprimir}.
+	 * Enter a parse tree produced by {@link LinguagemParser#comando}.
 	 * @param ctx the parse tree
 	 */
-	void enterImprimir(LinguagemParser.ImprimirContext ctx);
+	void enterComando(LinguagemParser.ComandoContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LinguagemParser#imprimir}.
+	 * Exit a parse tree produced by {@link LinguagemParser#comando}.
 	 * @param ctx the parse tree
 	 */
-	void exitImprimir(LinguagemParser.ImprimirContext ctx);
+	void exitComando(LinguagemParser.ComandoContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LinguagemParser#ler}.
+	 * Enter a parse tree produced by {@link LinguagemParser#entradaesaida}.
 	 * @param ctx the parse tree
 	 */
-	void enterLer(LinguagemParser.LerContext ctx);
+	void enterEntradaesaida(LinguagemParser.EntradaesaidaContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LinguagemParser#ler}.
+	 * Exit a parse tree produced by {@link LinguagemParser#entradaesaida}.
 	 * @param ctx the parse tree
 	 */
-	void exitLer(LinguagemParser.LerContext ctx);
+	void exitEntradaesaida(LinguagemParser.EntradaesaidaContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LinguagemParser#retorno}.
 	 * @param ctx the parse tree
@@ -118,95 +138,95 @@ public interface LinguagemListener extends ParseTreeListener {
 	 */
 	void exitCondicionais(LinguagemParser.CondicionaisContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LinguagemParser#iffi}.
+	 * Enter a parse tree produced by {@link LinguagemParser#ifdes}.
 	 * @param ctx the parse tree
 	 */
-	void enterIffi(LinguagemParser.IffiContext ctx);
+	void enterIfdes(LinguagemParser.IfdesContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LinguagemParser#iffi}.
+	 * Exit a parse tree produced by {@link LinguagemParser#ifdes}.
 	 * @param ctx the parse tree
 	 */
-	void exitIffi(LinguagemParser.IffiContext ctx);
+	void exitIfdes(LinguagemParser.IfdesContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LinguagemParser#elsese}.
+	 * Enter a parse tree produced by {@link LinguagemParser#ifdeselse}.
 	 * @param ctx the parse tree
 	 */
-	void enterElsese(LinguagemParser.ElseseContext ctx);
+	void enterIfdeselse(LinguagemParser.IfdeselseContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LinguagemParser#elsese}.
+	 * Exit a parse tree produced by {@link LinguagemParser#ifdeselse}.
 	 * @param ctx the parse tree
 	 */
-	void exitElsese(LinguagemParser.ElseseContext ctx);
+	void exitIfdeselse(LinguagemParser.IfdeselseContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LinguagemParser#elseiffi}.
+	 * Enter a parse tree produced by {@link LinguagemParser#ifdeselseif}.
 	 * @param ctx the parse tree
 	 */
-	void enterElseiffi(LinguagemParser.ElseiffiContext ctx);
+	void enterIfdeselseif(LinguagemParser.IfdeselseifContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LinguagemParser#elseiffi}.
+	 * Exit a parse tree produced by {@link LinguagemParser#ifdeselseif}.
 	 * @param ctx the parse tree
 	 */
-	void exitElseiffi(LinguagemParser.ElseiffiContext ctx);
+	void exitIfdeselseif(LinguagemParser.IfdeselseifContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LinguagemParser#whiles}.
+	 * Enter a parse tree produced by {@link LinguagemParser#whiledes}.
 	 * @param ctx the parse tree
 	 */
-	void enterWhiles(LinguagemParser.WhilesContext ctx);
+	void enterWhiledes(LinguagemParser.WhiledesContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LinguagemParser#whiles}.
+	 * Exit a parse tree produced by {@link LinguagemParser#whiledes}.
 	 * @param ctx the parse tree
 	 */
-	void exitWhiles(LinguagemParser.WhilesContext ctx);
+	void exitWhiledes(LinguagemParser.WhiledesContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LinguagemParser#fors}.
+	 * Enter a parse tree produced by {@link LinguagemParser#fordes}.
 	 * @param ctx the parse tree
 	 */
-	void enterFors(LinguagemParser.ForsContext ctx);
+	void enterFordes(LinguagemParser.FordesContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LinguagemParser#fors}.
+	 * Exit a parse tree produced by {@link LinguagemParser#fordes}.
 	 * @param ctx the parse tree
 	 */
-	void exitFors(LinguagemParser.ForsContext ctx);
+	void exitFordes(LinguagemParser.FordesContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LinguagemParser#dos}.
+	 * Enter a parse tree produced by {@link LinguagemParser#dodes}.
 	 * @param ctx the parse tree
 	 */
-	void enterDos(LinguagemParser.DosContext ctx);
+	void enterDodes(LinguagemParser.DodesContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LinguagemParser#dos}.
+	 * Exit a parse tree produced by {@link LinguagemParser#dodes}.
 	 * @param ctx the parse tree
 	 */
-	void exitDos(LinguagemParser.DosContext ctx);
+	void exitDodes(LinguagemParser.DodesContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LinguagemParser#switchs}.
+	 * Enter a parse tree produced by {@link LinguagemParser#switchdes}.
 	 * @param ctx the parse tree
 	 */
-	void enterSwitchs(LinguagemParser.SwitchsContext ctx);
+	void enterSwitchdes(LinguagemParser.SwitchdesContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LinguagemParser#switchs}.
+	 * Exit a parse tree produced by {@link LinguagemParser#switchdes}.
 	 * @param ctx the parse tree
 	 */
-	void exitSwitchs(LinguagemParser.SwitchsContext ctx);
+	void exitSwitchdes(LinguagemParser.SwitchdesContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LinguagemParser#cases}.
+	 * Enter a parse tree produced by {@link LinguagemParser#switchCase}.
 	 * @param ctx the parse tree
 	 */
-	void enterCases(LinguagemParser.CasesContext ctx);
+	void enterSwitchCase(LinguagemParser.SwitchCaseContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LinguagemParser#cases}.
+	 * Exit a parse tree produced by {@link LinguagemParser#switchCase}.
 	 * @param ctx the parse tree
 	 */
-	void exitCases(LinguagemParser.CasesContext ctx);
+	void exitSwitchCase(LinguagemParser.SwitchCaseContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LinguagemParser#defaults}.
+	 * Enter a parse tree produced by {@link LinguagemParser#defaultdes}.
 	 * @param ctx the parse tree
 	 */
-	void enterDefaults(LinguagemParser.DefaultsContext ctx);
+	void enterDefaultdes(LinguagemParser.DefaultdesContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LinguagemParser#defaults}.
+	 * Exit a parse tree produced by {@link LinguagemParser#defaultdes}.
 	 * @param ctx the parse tree
 	 */
-	void exitDefaults(LinguagemParser.DefaultsContext ctx);
+	void exitDefaultdes(LinguagemParser.DefaultdesContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LinguagemParser#declaracoes}.
 	 * @param ctx the parse tree
@@ -217,6 +237,16 @@ public interface LinguagemListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDeclaracoes(LinguagemParser.DeclaracoesContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LinguagemParser#declaracao}.
+	 * @param ctx the parse tree
+	 */
+	void enterDeclaracao(LinguagemParser.DeclaracaoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LinguagemParser#declaracao}.
+	 * @param ctx the parse tree
+	 */
+	void exitDeclaracao(LinguagemParser.DeclaracaoContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LinguagemParser#multidimensional}.
 	 * @param ctx the parse tree
@@ -307,6 +337,16 @@ public interface LinguagemListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitOperations(LinguagemParser.OperationsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LinguagemParser#op_atr}.
+	 * @param ctx the parse tree
+	 */
+	void enterOp_atr(LinguagemParser.Op_atrContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LinguagemParser#op_atr}.
+	 * @param ctx the parse tree
+	 */
+	void exitOp_atr(LinguagemParser.Op_atrContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LinguagemParser#op_rel}.
 	 * @param ctx the parse tree

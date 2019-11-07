@@ -28,13 +28,25 @@ public class LinguagemBaseListener implements LinguagemListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFuncoes(LinguagemParser.FuncoesContext ctx) { }
+	@Override public void enterFuncaoInicio(LinguagemParser.FuncaoInicioContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFuncoes(LinguagemParser.FuncoesContext ctx) { }
+	@Override public void exitFuncaoInicio(LinguagemParser.FuncaoInicioContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFuncao(LinguagemParser.FuncaoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFuncao(LinguagemParser.FuncaoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -47,6 +59,18 @@ public class LinguagemBaseListener implements LinguagemListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitParametros(LinguagemParser.ParametrosContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParametro(LinguagemParser.ParametroContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParametro(LinguagemParser.ParametroContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -76,25 +100,25 @@ public class LinguagemBaseListener implements LinguagemListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterImprimir(LinguagemParser.ImprimirContext ctx) { }
+	@Override public void enterComando(LinguagemParser.ComandoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitImprimir(LinguagemParser.ImprimirContext ctx) { }
+	@Override public void exitComando(LinguagemParser.ComandoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLer(LinguagemParser.LerContext ctx) { }
+	@Override public void enterEntradaesaida(LinguagemParser.EntradaesaidaContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLer(LinguagemParser.LerContext ctx) { }
+	@Override public void exitEntradaesaida(LinguagemParser.EntradaesaidaContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -148,109 +172,109 @@ public class LinguagemBaseListener implements LinguagemListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIffi(LinguagemParser.IffiContext ctx) { }
+	@Override public void enterIfdes(LinguagemParser.IfdesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIffi(LinguagemParser.IffiContext ctx) { }
+	@Override public void exitIfdes(LinguagemParser.IfdesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterElsese(LinguagemParser.ElseseContext ctx) { }
+	@Override public void enterIfdeselse(LinguagemParser.IfdeselseContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitElsese(LinguagemParser.ElseseContext ctx) { }
+	@Override public void exitIfdeselse(LinguagemParser.IfdeselseContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterElseiffi(LinguagemParser.ElseiffiContext ctx) { }
+	@Override public void enterIfdeselseif(LinguagemParser.IfdeselseifContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitElseiffi(LinguagemParser.ElseiffiContext ctx) { }
+	@Override public void exitIfdeselseif(LinguagemParser.IfdeselseifContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterWhiles(LinguagemParser.WhilesContext ctx) { }
+	@Override public void enterWhiledes(LinguagemParser.WhiledesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitWhiles(LinguagemParser.WhilesContext ctx) { }
+	@Override public void exitWhiledes(LinguagemParser.WhiledesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFors(LinguagemParser.ForsContext ctx) { }
+	@Override public void enterFordes(LinguagemParser.FordesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFors(LinguagemParser.ForsContext ctx) { }
+	@Override public void exitFordes(LinguagemParser.FordesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDos(LinguagemParser.DosContext ctx) { }
+	@Override public void enterDodes(LinguagemParser.DodesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDos(LinguagemParser.DosContext ctx) { }
+	@Override public void exitDodes(LinguagemParser.DodesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSwitchs(LinguagemParser.SwitchsContext ctx) { }
+	@Override public void enterSwitchdes(LinguagemParser.SwitchdesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSwitchs(LinguagemParser.SwitchsContext ctx) { }
+	@Override public void exitSwitchdes(LinguagemParser.SwitchdesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCases(LinguagemParser.CasesContext ctx) { }
+	@Override public void enterSwitchCase(LinguagemParser.SwitchCaseContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCases(LinguagemParser.CasesContext ctx) { }
+	@Override public void exitSwitchCase(LinguagemParser.SwitchCaseContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDefaults(LinguagemParser.DefaultsContext ctx) { }
+	@Override public void enterDefaultdes(LinguagemParser.DefaultdesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDefaults(LinguagemParser.DefaultsContext ctx) { }
+	@Override public void exitDefaultdes(LinguagemParser.DefaultdesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -263,6 +287,18 @@ public class LinguagemBaseListener implements LinguagemListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitDeclaracoes(LinguagemParser.DeclaracoesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDeclaracao(LinguagemParser.DeclaracaoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDeclaracao(LinguagemParser.DeclaracaoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -371,6 +407,18 @@ public class LinguagemBaseListener implements LinguagemListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitOperations(LinguagemParser.OperationsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOp_atr(LinguagemParser.Op_atrContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOp_atr(LinguagemParser.Op_atrContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

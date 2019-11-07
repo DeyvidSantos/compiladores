@@ -17,17 +17,29 @@ public interface LinguagemVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProg(LinguagemParser.ProgContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LinguagemParser#funcoes}.
+	 * Visit a parse tree produced by {@link LinguagemParser#funcaoInicio}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFuncoes(LinguagemParser.FuncoesContext ctx);
+	T visitFuncaoInicio(LinguagemParser.FuncaoInicioContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LinguagemParser#funcao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFuncao(LinguagemParser.FuncaoContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LinguagemParser#parametros}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitParametros(LinguagemParser.ParametrosContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LinguagemParser#parametro}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParametro(LinguagemParser.ParametroContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LinguagemParser#bloco}.
 	 * @param ctx the parse tree
@@ -41,17 +53,17 @@ public interface LinguagemVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitComandos(LinguagemParser.ComandosContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LinguagemParser#imprimir}.
+	 * Visit a parse tree produced by {@link LinguagemParser#comando}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitImprimir(LinguagemParser.ImprimirContext ctx);
+	T visitComando(LinguagemParser.ComandoContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LinguagemParser#ler}.
+	 * Visit a parse tree produced by {@link LinguagemParser#entradaesaida}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLer(LinguagemParser.LerContext ctx);
+	T visitEntradaesaida(LinguagemParser.EntradaesaidaContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LinguagemParser#retorno}.
 	 * @param ctx the parse tree
@@ -77,65 +89,71 @@ public interface LinguagemVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCondicionais(LinguagemParser.CondicionaisContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LinguagemParser#iffi}.
+	 * Visit a parse tree produced by {@link LinguagemParser#ifdes}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIffi(LinguagemParser.IffiContext ctx);
+	T visitIfdes(LinguagemParser.IfdesContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LinguagemParser#elsese}.
+	 * Visit a parse tree produced by {@link LinguagemParser#ifdeselse}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitElsese(LinguagemParser.ElseseContext ctx);
+	T visitIfdeselse(LinguagemParser.IfdeselseContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LinguagemParser#elseiffi}.
+	 * Visit a parse tree produced by {@link LinguagemParser#ifdeselseif}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitElseiffi(LinguagemParser.ElseiffiContext ctx);
+	T visitIfdeselseif(LinguagemParser.IfdeselseifContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LinguagemParser#whiles}.
+	 * Visit a parse tree produced by {@link LinguagemParser#whiledes}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitWhiles(LinguagemParser.WhilesContext ctx);
+	T visitWhiledes(LinguagemParser.WhiledesContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LinguagemParser#fors}.
+	 * Visit a parse tree produced by {@link LinguagemParser#fordes}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFors(LinguagemParser.ForsContext ctx);
+	T visitFordes(LinguagemParser.FordesContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LinguagemParser#dos}.
+	 * Visit a parse tree produced by {@link LinguagemParser#dodes}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDos(LinguagemParser.DosContext ctx);
+	T visitDodes(LinguagemParser.DodesContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LinguagemParser#switchs}.
+	 * Visit a parse tree produced by {@link LinguagemParser#switchdes}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSwitchs(LinguagemParser.SwitchsContext ctx);
+	T visitSwitchdes(LinguagemParser.SwitchdesContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LinguagemParser#cases}.
+	 * Visit a parse tree produced by {@link LinguagemParser#switchCase}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCases(LinguagemParser.CasesContext ctx);
+	T visitSwitchCase(LinguagemParser.SwitchCaseContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LinguagemParser#defaults}.
+	 * Visit a parse tree produced by {@link LinguagemParser#defaultdes}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDefaults(LinguagemParser.DefaultsContext ctx);
+	T visitDefaultdes(LinguagemParser.DefaultdesContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LinguagemParser#declaracoes}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitDeclaracoes(LinguagemParser.DeclaracoesContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LinguagemParser#declaracao}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDeclaracao(LinguagemParser.DeclaracaoContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LinguagemParser#multidimensional}.
 	 * @param ctx the parse tree
@@ -190,6 +208,12 @@ public interface LinguagemVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitOperations(LinguagemParser.OperationsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LinguagemParser#op_atr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOp_atr(LinguagemParser.Op_atrContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LinguagemParser#op_rel}.
 	 * @param ctx the parse tree

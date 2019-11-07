@@ -24,7 +24,14 @@ public class LinguagemBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFuncoes(LinguagemParser.FuncoesContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFuncaoInicio(LinguagemParser.FuncaoInicioContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitFuncao(LinguagemParser.FuncaoContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -32,6 +39,13 @@ public class LinguagemBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitParametros(LinguagemParser.ParametrosContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitParametro(LinguagemParser.ParametroContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -52,14 +66,14 @@ public class LinguagemBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitImprimir(LinguagemParser.ImprimirContext ctx) { return visitChildren(ctx); }
+	@Override public T visitComando(LinguagemParser.ComandoContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLer(LinguagemParser.LerContext ctx) { return visitChildren(ctx); }
+	@Override public T visitEntradaesaida(LinguagemParser.EntradaesaidaContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -94,63 +108,63 @@ public class LinguagemBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIffi(LinguagemParser.IffiContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIfdes(LinguagemParser.IfdesContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitElsese(LinguagemParser.ElseseContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIfdeselse(LinguagemParser.IfdeselseContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitElseiffi(LinguagemParser.ElseiffiContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIfdeselseif(LinguagemParser.IfdeselseifContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitWhiles(LinguagemParser.WhilesContext ctx) { return visitChildren(ctx); }
+	@Override public T visitWhiledes(LinguagemParser.WhiledesContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitFors(LinguagemParser.ForsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitFordes(LinguagemParser.FordesContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDos(LinguagemParser.DosContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDodes(LinguagemParser.DodesContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitSwitchs(LinguagemParser.SwitchsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSwitchdes(LinguagemParser.SwitchdesContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCases(LinguagemParser.CasesContext ctx) { return visitChildren(ctx); }
+	@Override public T visitSwitchCase(LinguagemParser.SwitchCaseContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDefaults(LinguagemParser.DefaultsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDefaultdes(LinguagemParser.DefaultdesContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -158,6 +172,13 @@ public class LinguagemBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitDeclaracoes(LinguagemParser.DeclaracoesContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitDeclaracao(LinguagemParser.DeclaracaoContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -221,6 +242,13 @@ public class LinguagemBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitOperations(LinguagemParser.OperationsContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitOp_atr(LinguagemParser.Op_atrContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
