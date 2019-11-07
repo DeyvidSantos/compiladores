@@ -32,6 +32,7 @@ public class ExecutarGramatica extends javax.swing.JFrame {
 
     String url;
     List<Identificador> ids = null;
+    String codigoAssembly = "";
 
     /**
      * Creates new form Frame
@@ -59,6 +60,7 @@ public class ExecutarGramatica extends javax.swing.JFrame {
         abrirBotao = new javax.swing.JButton();
         salvarBotao = new javax.swing.JButton();
         tabelaBotao = new javax.swing.JButton();
+        telaAssmbly = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         panelAvisos = new javax.swing.JTabbedPane();
@@ -108,6 +110,13 @@ public class ExecutarGramatica extends javax.swing.JFrame {
             }
         });
 
+        telaAssmbly.setText("AVENGERS: ASSMBLY");
+        telaAssmbly.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                telaAssmblyActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -126,7 +135,9 @@ public class ExecutarGramatica extends javax.swing.JFrame {
                         .addComponent(salvarBotao)
                         .addGap(38, 38, 38)
                         .addComponent(tabelaBotao)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 243, Short.MAX_VALUE)
+                        .addGap(48, 48, 48)
+                        .addComponent(telaAssmbly)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                         .addComponent(compiladorBotao, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -147,7 +158,8 @@ public class ExecutarGramatica extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(abrirBotao)
                             .addComponent(salvarBotao)
-                            .addComponent(tabelaBotao))
+                            .addComponent(tabelaBotao)
+                            .addComponent(telaAssmbly))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -224,7 +236,7 @@ public class ExecutarGramatica extends javax.swing.JFrame {
             try {
                 visitor.visit(tree);
                 ids = visitor.getTabelaSimbolos();
-
+                BipGenerator vesetador = new BipGenerator(ids);
                 for (Identificador id : ids) {
                     if (id.isUsada() == false) {
                         modeloAviso.addElement(((!id.isFuncao() ? "Váriavel " : "Função ") + id.getNome() + " foi declarada mas não utilizada"));
@@ -236,7 +248,10 @@ public class ExecutarGramatica extends javax.swing.JFrame {
                         modeloAviso.addElement(warning);
                     }
                 }
-
+                vesetador.visit(tree);
+                System.out.println(vesetador.getCodigo());
+                codigoAssembly = vesetador.getCodigo();
+                
             } catch (Exception e) {
                 System.out.println(e.getLocalizedMessage());
                 errolexico.getErrors().add(e.getLocalizedMessage());
@@ -293,6 +308,12 @@ public class ExecutarGramatica extends javax.swing.JFrame {
         new Tabela(ids).setVisible(true);
     }//GEN-LAST:event_tabelaBotaoActionPerformed
 
+    private void telaAssmblyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_telaAssmblyActionPerformed
+        TelaAssamble telaAssamble = new TelaAssamble(codigoAssembly);
+        telaAssamble.setSize(1024, 768);
+        telaAssamble.setVisible(true);
+    }//GEN-LAST:event_telaAssmblyActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -345,6 +366,7 @@ public class ExecutarGramatica extends javax.swing.JFrame {
     private javax.swing.JTabbedPane panelAvisos;
     private javax.swing.JButton salvarBotao;
     private javax.swing.JButton tabelaBotao;
+    private javax.swing.JButton telaAssmbly;
     private javax.swing.JTextArea txtCodigo;
     // End of variables declaration//GEN-END:variables
 }

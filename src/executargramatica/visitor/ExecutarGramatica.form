@@ -62,7 +62,9 @@
                               <Component id="salvarBotao" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                               <Component id="tabelaBotao" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="243" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+                              <Component id="telaAssmbly" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="38" max="32767" attributes="0"/>
                               <Component id="compiladorBotao" min="-2" pref="93" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -89,6 +91,7 @@
                                   <Component id="abrirBotao" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="salvarBotao" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="tabelaBotao" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="telaAssmbly" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
@@ -148,6 +151,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tabelaBotaoActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="telaAssmbly">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="AVENGERS: ASSMBLY"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="telaAssmblyActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

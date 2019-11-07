@@ -43,6 +43,12 @@ multidimensional: (COCH expressao COCH_E)+;
 
 declaracoesArray: CHAVE (subArrayDeclaracoes|declaracoesArray) CHAVE_E (VIRGULA CHAVE (subArrayDeclaracoes|declaracoesArray) CHAVE_E)*;
 subArrayDeclaracoes: expressao (VIRGULA expressao)* ;
+/*
+arraySize : INT | ID;
+array: ID multidimensional;
+matriz: ID multidimensional multidimensional;
+*/
+
 
 //**** Atribuições
 atribuicoes: ID (multidimensional)? ((atribuicoesIncEDec)|((ATRIBU | op_atr) expressao));
