@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.misc.ParseCancellationException;
 import executargramatica.models.AssemblyName;
 import executargramatica.models.Identificador;
 import executargramatica.lingaguemmodel.LinguagemParser;
+import executargramatica.models.Escopo;
 
 
 /**
@@ -606,6 +607,132 @@ public class BipGenerator extends VisitorLingaguem {
         return null;
     }
 
+    @Override
+    public Object visitFordes(LinguagemParser.FordesContext ctx) {
+  escopoAtual = Escopo.criaEVaiEscopoNovo("for_" + contEscopo++, escopoAtual);
+        if(ctx.declaracoes() != null){
+            visitDeclaracoes(ctx.declaracoes());
+        }else{
+            visitAtribuicoes(ctx.atribuicoes(0));
+        }
+        String rotRest = getOneRot();
+        String rotQuit = getOneRot();
+        comando(rotRest+" : ", "");
+        
+        visitExpressao(ctx.expressao());
+        
+        List<LinguagemParser.OperationsContext> operacoes = ctx.expressao().operations();
+        for (LinguagemParser.OperationsContext operacao : operacoes) {
+            if (operacao.op_rel() != null) {
+                resolveSalto(operacao.op_rel(), true, rotQuit);
+            }
+        }
+        
+        visitBloco(ctx.bloco());
+        visitAtribuicoes(ctx.atribuicoes(ctx.atribuicoes().size() - 1));
+//        List<MemelangParser.AtribuicoesContext> atris = ctx.atribuicoes();
+//        for (MemelangParser.AtribuicoesContext atri : atris) {
+//            visitAtribuicoes(atri);
+//        }
+        
+        comando("JMP", rotRest);
+        comando(rotQuit+" : ", "");
+        retornaEscopoPai();
+        return null;
+    }
+
+    @Override
+    public Object visitIfdes(LinguagemParser.IfdesContext ctx) {
+       escopoAtual = Escopo.criaEVaiEscopoNovo("if_" + contEscopo++, escopoAtual);
+        String rot = getOneRot();
+        String rot2 = null;
+        visitExpressao(ctx.expressao());
+        List<LinguagemParser.OperationsContext> operacoes = ctx.expressao().operations();
+        for (LinguagemParser.OperationsContext operacao : operacoes) {
+            if (operacao.op_rel() != null) {
+                resolveSalto(operacao.op_rel(), true, rot);
+            }
+        }
+        visitBloco(ctx.bloco());
+        if (ctx.ifdeselse() != null || ctx.ifdeselseif() != null) {
+            rot2 = getOneRot();
+            comando("JMP", rot2);
+        }
+        comando(rot + " : ", "");
+
+        if (ctx.ifdeselse() != null) {
+            visitIfdeselse(ctx.ifdeselse());
+            comando(rot2 + " : ", "");
+        }
+        if (ctx.ifdeselseif() != null) {
+            visitIfdeselseif(ctx.ifdeselseif());
+            comando(rot2 + " : ", "");
+        }
+        retornaEscopoPai();
+        return null;
+    }
+
+    @Override
+    public Object visitIfdeselse(LinguagemParser.IfdeselseContext ctx) {
+         escopoAtual = Escopo.criaEVaiEscopoNovo("else_" + contEscopo++, escopoAtual);
+        return super.visitIfdeselse(ctx); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object visitIfdeselseif(LinguagemParser.IfdeselseifContext ctx) {
+        escopoAtual = Escopo.criaEVaiEscopoNovo("else_if_" + contEscopo++, escopoAtual);
+        return super.visitIfdeselseif(ctx); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object visitDodes(LinguagemParser.DodesContext ctx) {
+         escopoAtual = Escopo.criaEVaiEscopoNovo("doWhile_" + contEscopo++, escopoAtual);
+        String rotRest = getOneRot();
+        String rotQuit = getOneRot();
+        comando(rotRest+" : ", "");
+        
+        visitBloco(ctx.bloco());
+        
+        visitExpressao(ctx.expressao());
+        
+        List<LinguagemParser.OperationsContext> operacoes = ctx.expressao().operations();
+        for (LinguagemParser.OperationsContext operacao : operacoes) {
+            if (operacao.op_rel() != null) {
+                resolveSalto(operacao.op_rel(), true, rotQuit);
+            }
+        }     
+        comando("JMP", rotRest);
+        comando(rotQuit+" : ", "");
+        retornaEscopoPai();
+        return null;
+    }
+
+    @Override
+    public Object visitWhiledes(LinguagemParser.WhiledesContext ctx) {
+          escopoAtual = Escopo.criaEVaiEscopoNovo("while_" + contEscopo++, escopoAtual);
+        String rotRest = getOneRot();
+        String rotQuit = getOneRot();
+        comando(rotRest+" : ", "");
+        
+        visitExpressao(ctx.expressao());
+        
+        List<LinguagemParser.OperationsContext> operacoes = ctx.expressao().operations();
+        for (LinguagemParser.OperationsContext operacao : operacoes) {
+            if (operacao.op_rel() != null) {
+                resolveSalto(operacao.op_rel(), true, rotQuit);
+            }
+        }
+        
+        visitBloco(ctx.bloco());
+        
+        comando("JMP", rotRest);
+        comando(rotQuit+" : ", "");
+        retornaEscopoPai();
+        return null;
+    }
+
+  
+    
     
 
 
