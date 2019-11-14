@@ -12,7 +12,7 @@ bloco: CHAVE comandos CHAVE_E ;
 
 //*** Comandos
 comandos: (condicionais|comando)*;
-comando:((retorno|declaracoes|atribuicoes|chamadaFuncao|entradaesaida)PONTOVIRGULA);
+comando:((entradaesaida|retorno|declaracoes|atribuicoes|chamadaFuncao)PONTOVIRGULA);
 
 //**** Entrada e Saida
 entradaesaida: (CIN | COUT) PARENTESES parametrosChamada PARENTESES_E;

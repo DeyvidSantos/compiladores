@@ -631,6 +631,9 @@ public class LinguagemParser extends Parser {
 
 	public static class ComandoContext extends ParserRuleContext {
 		public TerminalNode PONTOVIRGULA() { return getToken(LinguagemParser.PONTOVIRGULA, 0); }
+		public EntradaesaidaContext entradaesaida() {
+			return getRuleContext(EntradaesaidaContext.class,0);
+		}
 		public RetornoContext retorno() {
 			return getRuleContext(RetornoContext.class,0);
 		}
@@ -642,9 +645,6 @@ public class LinguagemParser extends Parser {
 		}
 		public ChamadaFuncaoContext chamadaFuncao() {
 			return getRuleContext(ChamadaFuncaoContext.class,0);
-		}
-		public EntradaesaidaContext entradaesaida() {
-			return getRuleContext(EntradaesaidaContext.class,0);
 		}
 		public ComandoContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -678,31 +678,31 @@ public class LinguagemParser extends Parser {
 			case 1:
 				{
 				setState(130);
-				retorno();
+				entradaesaida();
 				}
 				break;
 			case 2:
 				{
 				setState(131);
-				declaracoes();
+				retorno();
 				}
 				break;
 			case 3:
 				{
 				setState(132);
-				atribuicoes();
+				declaracoes();
 				}
 				break;
 			case 4:
 				{
 				setState(133);
-				chamadaFuncao();
+				atribuicoes();
 				}
 				break;
 			case 5:
 				{
 				setState(134);
-				entradaesaida();
+				chamadaFuncao();
 				}
 				break;
 			}
@@ -3130,13 +3130,13 @@ public class LinguagemParser extends Parser {
 		"\2x\13\3\2\2\2yz\7A\2\2z{\5\16\b\2{|\7B\2\2|\r\3\2\2\2}\u0080\5\32\16"+
 		"\2~\u0080\5\20\t\2\177}\3\2\2\2\177~\3\2\2\2\u0080\u0083\3\2\2\2\u0081"+
 		"\177\3\2\2\2\u0081\u0082\3\2\2\2\u0082\17\3\2\2\2\u0083\u0081\3\2\2\2"+
-		"\u0084\u008a\5\24\13\2\u0085\u008a\5.\30\2\u0086\u008a\58\35\2\u0087\u008a"+
-		"\5\26\f\2\u0088\u008a\5\22\n\2\u0089\u0084\3\2\2\2\u0089\u0085\3\2\2\2"+
-		"\u0089\u0086\3\2\2\2\u0089\u0087\3\2\2\2\u0089\u0088\3\2\2\2\u008a\u008b"+
-		"\3\2\2\2\u008b\u008c\7;\2\2\u008c\21\3\2\2\2\u008d\u008e\t\2\2\2\u008e"+
-		"\u008f\7?\2\2\u008f\u0090\5\30\r\2\u0090\u0091\7@\2\2\u0091\23\3\2\2\2"+
-		"\u0092\u0093\7F\2\2\u0093\u0094\5@!\2\u0094\25\3\2\2\2\u0095\u0096\7E"+
-		"\2\2\u0096\u0097\7?\2\2\u0097\u0098\5\30\r\2\u0098\u0099\7@\2\2\u0099"+
+		"\u0084\u008a\5\22\n\2\u0085\u008a\5\24\13\2\u0086\u008a\5.\30\2\u0087"+
+		"\u008a\58\35\2\u0088\u008a\5\26\f\2\u0089\u0084\3\2\2\2\u0089\u0085\3"+
+		"\2\2\2\u0089\u0086\3\2\2\2\u0089\u0087\3\2\2\2\u0089\u0088\3\2\2\2\u008a"+
+		"\u008b\3\2\2\2\u008b\u008c\7;\2\2\u008c\21\3\2\2\2\u008d\u008e\t\2\2\2"+
+		"\u008e\u008f\7?\2\2\u008f\u0090\5\30\r\2\u0090\u0091\7@\2\2\u0091\23\3"+
+		"\2\2\2\u0092\u0093\7F\2\2\u0093\u0094\5@!\2\u0094\25\3\2\2\2\u0095\u0096"+
+		"\7E\2\2\u0096\u0097\7?\2\2\u0097\u0098\5\30\r\2\u0098\u0099\7@\2\2\u0099"+
 		"\27\3\2\2\2\u009a\u009f\5@!\2\u009b\u009c\7=\2\2\u009c\u009e\5@!\2\u009d"+
 		"\u009b\3\2\2\2\u009e\u00a1\3\2\2\2\u009f\u009d\3\2\2\2\u009f\u00a0\3\2"+
 		"\2\2\u00a0\u00a3\3\2\2\2\u00a1\u009f\3\2\2\2\u00a2\u009a\3\2\2\2\u00a2"+

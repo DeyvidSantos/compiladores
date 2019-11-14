@@ -22,6 +22,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 public class LiguagemSemantico extends VisitorLingaguem {
 
     List<String> warnings = new ArrayList<>();
+      List<ParseCancellationException> semanticErrors = new ArrayList<ParseCancellationException>();
 
     public List<String> getWarnings() {
         return warnings;
@@ -101,11 +102,30 @@ public class LiguagemSemantico extends VisitorLingaguem {
     }
 
     @Override
+    public Object visitEntradaesaida(LinguagemParser.EntradaesaidaContext ctx) {
+     for (LinguagemParser.ExpressaoContext exp : ctx.parametrosChamada().expressao()) {
+            visitExpressao(exp);
+            if(ctx.CIN()!= null && exp.val_final(0).ID() == null){
+                this.semanticErrors.add(new ParseCancellationException("Tentando ler uma entrada em uma constante na Linha: " + ctx.start.getLine() + " Coluna: " + ctx.start.getCharPositionInLine()));
+            }
+        }
+        return null;
+    }
+
+    
+    @Override
     public Object visitComandos(LinguagemParser.ComandosContext ctx) {
         visitChildren(ctx);
         return null;
     }
 
+    @Override
+    public Object visitComando(LinguagemParser.ComandoContext ctx) {
+        visitChildren(ctx);
+        return null;
+    }
+
+    
     @Override
     public Object visitCondicionais(LinguagemParser.CondicionaisContext ctx) {
         return super.visitCondicionais(ctx); //To change body of generated methods, choose Tools | Templates.
@@ -413,5 +433,7 @@ public class LiguagemSemantico extends VisitorLingaguem {
             retornaEscopoPai();
         }
     }
+    
+    
 
-}
+            }

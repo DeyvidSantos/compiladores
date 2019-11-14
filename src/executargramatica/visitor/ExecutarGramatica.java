@@ -253,8 +253,8 @@ public class ExecutarGramatica extends javax.swing.JFrame {
                 codigoAssembly = vesetador.getCodigo();
                 
             } catch (Exception e) {
-                System.out.println(e.getLocalizedMessage());
-                errolexico.getErrors().add(e.getLocalizedMessage());
+                
+               
                 modeloLista.addElement(e.getLocalizedMessage());
             }
         }
