@@ -101,7 +101,7 @@ public class Identificador {
             if (variavel.getNome().equals(nomeVariavel)) {
                 Escopo EscopoAtualVerificado = escopoAtual;
                 while (EscopoAtualVerificado != null) {
-                    if (variavel.getEscopo() == EscopoAtualVerificado) {
+                    if (variavel.getEscopo().getNome().equals(EscopoAtualVerificado.getNome())) {
                         return variavel;
                     }
                     EscopoAtualVerificado = EscopoAtualVerificado.getPai();

@@ -575,7 +575,8 @@ public class BipGenerator extends VisitorLingaguem {
         visitTipo(ctx.tipo());
         for (LinguagemParser.DeclaracaoContext declaracaoContext : ctx.declaracao()) {  
             if(declaracaoContext.ATRIBU()!= null){
-                AssemblyName variavel = findAN(declaracaoContext.ID().getText());
+                 String debug = declaracaoContext.getText();
+                AssemblyName variavel = findAN(declaracaoContext.ID().getSymbol().getText());
                 if (declaracaoContext.multidimensional() == null) {
                     visitExpressao(declaracaoContext.expressao());
                     comando("STO", variavel.toString());
@@ -609,7 +610,7 @@ public class BipGenerator extends VisitorLingaguem {
 
     @Override
     public Object visitFordes(LinguagemParser.FordesContext ctx) {
-  escopoAtual = Escopo.criaEVaiEscopoNovo("for_" + contEscopo++, escopoAtual);
+       escopoAtual = Escopo.criaEVaiEscopoNovo("for_" + contEscopo++, escopoAtual);
         if(ctx.declaracoes() != null){
             visitDeclaracoes(ctx.declaracoes());
         }else{

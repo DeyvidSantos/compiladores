@@ -12,6 +12,7 @@ import executargramatica.models.Identificador;
 import executargramatica.models.Identificador.Tipo;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -22,8 +23,14 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 public class LiguagemSemantico extends VisitorLingaguem {
 
     List<String> warnings = new ArrayList<>();
-      List<ParseCancellationException> semanticErrors = new ArrayList<ParseCancellationException>();
-
+    List<ParseCancellationException> semanticErrors = new ArrayList<ParseCancellationException>();
+    Stack<Identificador.Tipo> pilhaTipoExpressao = new Stack<>();
+    Stack<Operation> pilhaOperacao = new Stack<>();
+    boolean temRetorno = false;
+    Tipo tipoFuncao = null;
+    int contEscopo = 1;
+    
+    
     public List<String> getWarnings() {
         return warnings;
     }
@@ -101,16 +108,6 @@ public class LiguagemSemantico extends VisitorLingaguem {
         return null;
     }
 
-    @Override
-    public Object visitEntradaesaida(LinguagemParser.EntradaesaidaContext ctx) {
-     for (LinguagemParser.ExpressaoContext exp : ctx.parametrosChamada().expressao()) {
-            visitExpressao(exp);
-            if(ctx.CIN()!= null && exp.val_final(0).ID() == null){
-                this.semanticErrors.add(new ParseCancellationException("Tentando ler uma entrada em uma constante na Linha: " + ctx.start.getLine() + " Coluna: " + ctx.start.getCharPositionInLine()));
-            }
-        }
-        return null;
-    }
 
     
     @Override
@@ -176,37 +173,6 @@ public class LiguagemSemantico extends VisitorLingaguem {
         return super.visitDeclaracoesArray(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public Object visitDodes(LinguagemParser.DodesContext ctx) {
-        escopoAtual = Escopo.criaEVaiEscopoNovo("while", escopoAtual);
-        visitChildren(ctx);
-        retornaEscopoPai();
-        return null;
-    }
-
-    @Override
-    public Object visitIfdes(LinguagemParser.IfdesContext ctx) {
-        escopoAtual = Escopo.criaEVaiEscopoNovo("if", escopoAtual);
-        visitChildren(ctx);
-        retornaEscopoPai();
-        return null;
-    }
-
-    @Override
-    public Object visitIfdeselseif(LinguagemParser.IfdeselseifContext ctx) {
-        escopoAtual = Escopo.criaEVaiEscopoNovo("else if", escopoAtual);
-        visitChildren(ctx);
-        retornaEscopoPai();
-        return null;
-    }
-
-    @Override
-    public Object visitIfdeselse(LinguagemParser.IfdeselseContext ctx) {
-        escopoAtual = Escopo.criaEVaiEscopoNovo("else", escopoAtual);
-        visitChildren(ctx);
-        retornaEscopoPai();
-        return null;
-    }
 
     @Override
     public Object visitExpressao(LinguagemParser.ExpressaoContext ctx) {
@@ -238,13 +204,6 @@ public class LiguagemSemantico extends VisitorLingaguem {
         return super.visitExpressao(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public Object visitFordes(LinguagemParser.FordesContext ctx) {
-        escopoAtual = Escopo.criaEVaiEscopoNovo("for", escopoAtual);
-        visitChildren(ctx);
-        retornaEscopoPai();
-        return null;
-    }
 
     @Override
     public Object visitFuncao(LinguagemParser.FuncaoContext ctx) {
@@ -339,14 +298,7 @@ public class LiguagemSemantico extends VisitorLingaguem {
         return super.visitSubArrayDeclaracoes(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public Object visitWhiledes(LinguagemParser.WhiledesContext ctx) {
-        escopoAtual = Escopo.criaEVaiEscopoNovo("while", escopoAtual);
-        visitChildren(ctx);
-        retornaEscopoPai();
-        return null;
-    }
-
+  
     @Override
     public Object visitParametrosChamada(LinguagemParser.ParametrosChamadaContext ctx) {
         return super.visitParametrosChamada(ctx); //To change body of generated methods, choose Tools | Templates.
@@ -435,5 +387,71 @@ public class LiguagemSemantico extends VisitorLingaguem {
     }
     
     
+  @Override
+    public Object visitWhiledes(LinguagemParser.WhiledesContext ctx) {
+       escopoAtual = Escopo.criaEVaiEscopoNovo("doWhile_" + contEscopo++, escopoAtual);
+        visitChildren(ctx);
+        retornaEscopoPai();
+        return null;
+    }
 
+    
+        @Override
+    public Object visitDodes(LinguagemParser.DodesContext ctx) {
+      escopoAtual = Escopo.criaEVaiEscopoNovo("doWhile_" + contEscopo++, escopoAtual);
+        visitChildren(ctx);
+        retornaEscopoPai();
+        return null;
+    }
+
+    @Override
+    public Object visitIfdes(LinguagemParser.IfdesContext ctx) {
+escopoAtual = Escopo.criaEVaiEscopoNovo("if_" + contEscopo++, escopoAtual);
+        visitChildren(ctx);
+        retornaEscopoPai();
+        return null;
+    }
+
+    @Override
+    public Object visitIfdeselseif(LinguagemParser.IfdeselseifContext ctx) {
+        escopoAtual = Escopo.criaEVaiEscopoNovo("else_if_" + contEscopo++, escopoAtual);
+        visitChildren(ctx);
+        retornaEscopoPai();
+        return null;
+    }
+
+    @Override
+    public Object visitIfdeselse(LinguagemParser.IfdeselseContext ctx) {
+        escopoAtual = Escopo.criaEVaiEscopoNovo("else_" + contEscopo++, escopoAtual);
+        visitChildren(ctx);
+        retornaEscopoPai();
+        return null;
+    }
+
+    
+        @Override
+    public Object visitFordes(LinguagemParser.FordesContext ctx) {
+        escopoAtual = Escopo.criaEVaiEscopoNovo("for_" + contEscopo++, escopoAtual);
+        visitChildren(ctx);
+        retornaEscopoPai();
+        return null;
+    }
+
+        @Override
+    public Object visitEntradaesaida(LinguagemParser.EntradaesaidaContext ctx) {
+     for (LinguagemParser.ExpressaoContext exp : ctx.parametrosChamada().expressao()) {
+            visitExpressao(exp);
+            if(ctx.CIN()!= null && exp.val_final(0).ID() == null){
+                this.semanticErrors.add(new ParseCancellationException("Tentando ler uma entrada em uma constante na Linha: " + ctx.start.getLine() + " Coluna: " + ctx.start.getCharPositionInLine()));
+            }
+        }
+        return null;
+    }
+
+    
+    
+    
+    
+    
+    
             }
