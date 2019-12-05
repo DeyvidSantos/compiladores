@@ -222,14 +222,20 @@ public class LiguagemSemantico extends VisitorLingaguem {
     public Object visitMultidimensional(LinguagemParser.MultidimensionalContext ctx) {
         multidimensional = ctx.COCH().size();
         qtdMultidimensional = 1;
+        return null; //To change body of generated methods, choose Tools | Templates.
+    }
+
+     public Object visitMultidimensional(LinguagemParser.MultidimensionalContext ctx, Tipo tipo) {
+        multidimensional = ctx.COCH().size();
+        qtdMultidimensional = 1;
         for (int i = 0; i < multidimensional; i++) {
-//            ctx.
-//            String item = ctx.N_INT(i).getSymbol().getText();
+            String item = ctx.expressao(i).getText();
 //            qtdMultidimensional *= Integer.parseInt(item);
         }
         return null; //To change body of generated methods, choose Tools | Templates.
     }
 
+    
     @Override
     public Object visitOp_arit_baixa(LinguagemParser.Op_arit_baixaContext ctx) {
         return super.visitOp_arit_baixa(ctx); //To change body of generated methods, choose Tools | Templates.
@@ -304,11 +310,198 @@ public class LiguagemSemantico extends VisitorLingaguem {
         return super.visitParametrosChamada(ctx); //To change body of generated methods, choose Tools | Templates.
     }
 
+    
+    
+    
+    
+    public Tipo visitExpressaoLoop(LinguagemParser.ExpressaoContext ctx){
+        if (ctx == null) {
+            return null;
+        }
+        Stack<Identificador.Tipo> pilhaTipoExpressaoLoop = new Stack<>();
+        Stack<Operation> pilhaOperacaoLoop = new Stack<>();
+        
+        
+        for (LinguagemParser.OperationsContext opCont : ctx.operations()) {
+            pilhaOperacaoLoop.push(verificarTipoOperacao(opCont));
+        }
+        for (int i = 0; i < ctx.val_final().size(); i++) {
+            String valFinal = ctx.val_final(i).getText();            
+            Tipo tipoExpParenteses = null;
+            if(ctx.val_final(i).multidimensional() != null){
+                valFinal =  ctx.val_final(i).ID().getText();
+            }
+            if(ctx.val_final(i).chamadaFuncao() != null){
+                valFinal = ctx.val_final(i).chamadaFuncao().ID().getText();
+            }
+            if(ctx.val_final(i).PARENTESES()!= null){
+                pilhaTipoExpressaoLoop.push(visitExpressaoLoop(ctx.val_final(i).expressao()));
+                
+                continue;
+            }
+            if (Identificador.getId(valFinal, tabelaSimbolos, escopoAtual) != null) {
+                Identificador id = Identificador.getId(valFinal, tabelaSimbolos, escopoAtual);
+                if (ctx.val_final(i).multidimensional() != null) {
+                    Tipo posicaoVetor = visitExpressaoLoop(ctx.val_final(i).multidimensional().expressao(0));
+                    if(posicaoVetor != Tipo.INTEIRO){
+                        this.semanticErrors.add(new ParseCancellationException("Tentando acessar posição de vetor com tipo não inteiro na Linha: " + ctx.start.getLine() + " Coluna: " + ctx.start.getCharPositionInLine()));
+                    }
+                    
+                    visitMultidimensional(ctx.val_final(i).multidimensional(), posicaoVetor);
+                } else {
+                    multidimensional = 0;
+                }
+                if (!id.isInicializada()) {
+                    this.semanticErrors.add(new ParseCancellationException("Váriavel " + id.getNome() + " não inicializada Linha: " + ctx.start.getLine() + " Coluna: " + ctx.start.getCharPositionInLine()));
+                   }
+                if (id.getDimensoes() != multidimensional) {
+                    this.semanticErrors.add(new ParseCancellationException("Dimensões incorreta do vetor " + id.getNome() + " . Ele possui " + id.getDimensoes() + " dimensões e foi usada " + multidimensional + " Linha: " + ctx.start.getLine() + " Coluna: " + ctx.start.getCharPositionInLine()));
+                }
+                id.setUsada(true);
+                
+                pilhaTipoExpressaoLoop.push(id.getTipo());
+                
+            }else if(verificarTipoConstante(ctx.val_final(i)) == null && tipoExpParenteses == null){
+                this.semanticErrors.add(new ParseCancellationException("Váriavel " + valFinal + " não existe neste escopo Linha: " + ctx.start.getLine() + " Coluna: " + ctx.start.getCharPositionInLine()));
+            }else{
+                if(tipoExpParenteses != null){
+                    pilhaTipoExpressaoLoop.push(tipoExpParenteses);
+                }
+                pilhaTipoExpressaoLoop.push(verificarTipoConstante(ctx.val_final(i)));
+            }
+        }
+        verificarCompatibilidadeOperacao(ctx, pilhaTipoExpressaoLoop, pilhaOperacaoLoop);
+        if(pilhaTipoExpressaoLoop.empty())
+        {
+            return null;
+        }
+        return pilhaTipoExpressaoLoop.peek();
+    }
+    
+     public void verificarCompatibilidadeOperacao(LinguagemParser.ExpressaoContext ctx, Stack<Tipo> pilhaTipoExpressao, Stack<Operation> pilhaOperacao){
+        if(pilhaOperacao.empty() || pilhaTipoExpressao.size() != pilhaOperacao.size() + 1){
+            
+            return;
+        }
+        int resultExp;
+        Tipo tipo1, tipo2;
+        Operation op;
+        while(!pilhaOperacao.empty()) {
+            tipo1 = pilhaTipoExpressao.pop();
+            tipo2 = pilhaTipoExpressao.pop();
+            
+            op = pilhaOperacao.pop();
+            int resulExp = SemanticTable.resultType(tipo1, tipo2, op);
+            if(resulExp == SemanticTable.ERR){
+                this.semanticErrors.add(new ParseCancellationException("Tentando realizar uma " + op.name() + " entre " + tipo1.name() + " e " + tipo2.name() + " na linha " + ctx.start.getLine()));
+                return;
+            }
+            pilhaTipoExpressao.push(SemanticTable.getCodeType(resulExp));
+        }
+    }
+    
+    
+      public Tipo verificarTipoConstante(LinguagemParser.Val_finalContext val){
+        if (val.N_BIN()!= null) {
+            return Tipo.BINARIO;
+        } else if (val.CONSTLOGICO() != null) {
+            return Tipo.LOGICO;
+        } else if (val.N_DOUBLE()!= null) {
+            return Tipo.REAL;
+        } else if (val.N_HEX()!= null) {
+            return Tipo.HEXADECIMAL;
+        } else if (val.N_INT()!= null) {
+            return Tipo.INTEIRO;
+        } else if (val.E_STRING()!= null) {
+            return Tipo.STRING;
+        }else if(val.E_CHAR()!= null){
+            return Tipo.STRING;
+        }
+        return null;
+    }
+    
+     public Operation verificarTipoOperacao(LinguagemParser.OperationsContext opContext){
+        if(opContext.op_arit_baixa() != null){
+            if(opContext.op_arit_baixa().DIV()!= null){
+                return Operation.DIV;
+            }
+            if(opContext.op_arit_baixa().SOMA()!= null){
+                return Operation.MAIS;
+            }
+            if(opContext.op_arit_baixa().MULT()!= null){
+                return Operation.MULT;
+            }
+            if(opContext.op_arit_baixa().RESTO()!= null){
+                return Operation.RESTO;
+            }
+        }
+        if(opContext.op_bitwise() != null){
+            if(opContext.op_bitwise().BIT_PE()!= null){
+                return Operation.BITSHIFTLEFT;
+            }
+            if(opContext.op_bitwise().BIT_PD()!= null){
+                return Operation.BITSHIFTRIGHT;
+            }
+        }
+        if(opContext.op_logica() != null){
+            if(opContext.op_logica().EE()!= null){
+                return Operation.AND;
+            }
+            if(opContext.op_logica().NEGA()!= null){
+                return Operation.NOT;
+            }
+            if(opContext.op_logica().OUOU()!= null){
+                return Operation.OR;
+            }
+        }
+        if(opContext.op_neg() != null){
+            if(opContext.op_neg().BIT_NOT()!= null){
+                return Operation.BITNOT;
+            }
+            if(opContext.op_neg().SUB()!= null){
+                return Operation.MENOS;
+            }
+            if(opContext.op_neg().NEGA()!= null){
+                return Operation.NOT;
+            }
+        }
+        if(opContext.op_rel() != null){
+            if(opContext.op_rel().DIF()!= null){
+                return Operation.DIFERENTE;
+            }
+            if(opContext.op_rel().IGUAL()!= null){
+                return Operation.IDENTICO;
+            }
+            if(opContext.op_rel().MAIOIG()!= null){
+                return Operation.MAIOROUIGUAL;
+            }
+            if(opContext.op_rel().MAIOQ()!= null){
+                return Operation.MAIORQUE;
+            }
+            if(opContext.op_rel().MENOQ()!= null){
+                return Operation.MENOROUIGUAL;
+            }
+            if(opContext.op_rel().MENOQ()!= null){
+                return Operation.MENORQUE;
+            }
+        }
+        return null;
+    }
+    
     @Override
     public Object visitRetorno(LinguagemParser.RetornoContext ctx) {
-        return super.visitRetorno(ctx); //To change body of generated methods, choose Tools | Templates.
+       Tipo tipoExpressao = visitExpressaoLoop(ctx.expressao());
+        if (tipoExpressao == tipoFuncao) {
+            temRetorno = true;
+        }
+        return null;
     }
-
+    
+   
+    
+    
+    
+    
     @Override
     public Object visitParametros(LinguagemParser.ParametrosContext ctx) {
 

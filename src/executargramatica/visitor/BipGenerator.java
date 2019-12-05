@@ -732,6 +732,13 @@ public class BipGenerator extends VisitorLingaguem {
         return null;
     }
 
+    @Override
+    public Object visitRetorno(LinguagemParser.RetornoContext ctx) {
+         visitExpressao(ctx.expressao());
+        this.codigo.append("\tRETURN\n");
+        return null; //To change body of generated methods, choose Tools | Templates.
+    }
+
   
     
     

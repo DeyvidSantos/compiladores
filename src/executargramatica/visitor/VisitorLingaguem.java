@@ -25,8 +25,7 @@ public abstract class VisitorLingaguem extends LinguagemBaseVisitor<Object> {
         OR,AND,OR2,NOT,AND2,
         MAIORQUE,MENORQUE,MAIOROUIGUAL,MENOROUIGUAL,IDENTICO,DIFERENTE,
         BITSHIFTLEFT,BITSHIFTRIGHT,BITNOT,
-        MENOS,
-        MAIS
+        MENOS, MAIS, RESTO, MULT, DIV
     };
     protected Operation operacao;
     /**

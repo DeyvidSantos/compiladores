@@ -23,6 +23,7 @@ public class TelaAssamble extends javax.swing.JFrame {
      */
     public TelaAssamble(String codigoAssembly) {
         initComponents();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.codigoAssembly = codigoAssembly;
         aseembleText.setText(codigoAssembly);
         
